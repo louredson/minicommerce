@@ -1,0 +1,57 @@
+﻿<div class="d-flex justify-content-between align-items-center mb-2">
+  <h2>Dashboard Admin</h2>
+  <button class="btn btn-outline-dark" (click)="downloadPdf()">Gerar Relatorio PDF</button>
+</div>
+
+<div class="row g-2 mb-3">
+  <div class="col-md-3"><label class="form-label">De</label><input type="date" class="form-control" [(ngModel)]="from" /></div>
+  <div class="col-md-3"><label class="form-label">Ate</label><input type="date" class="form-control" [(ngModel)]="to" /></div>
+  <div class="col-md-3 d-flex align-items-end"><button class="btn btn-dark" (click)="load()">Filtrar Compras</button></div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4"><div class="card p-3">Produtos: {{ stats.products || 0 }}</div></div>
+  <div class="col-md-4"><div class="card p-3">Pedidos: {{ stats.orders || 0 }}</div></div>
+  <div class="col-md-4"><div class="card p-3">Usuarios: {{ stats.users || 0 }}</div></div>
+</div>
+
+<div class="card p-3 mb-4">
+  <h5>Adicionar Produto</h5>
+  <div class="row g-2">
+    <div class="col-md-3"><input class="form-control" [(ngModel)]="newProduct.name" placeholder="Nome" /></div>
+    <div class="col-md-2">
+      <select class="form-select" [(ngModel)]="newProduct.category_id">
+        <option value="">Categoria</option>
+        <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+      </select>
+    </div>
+    <div class="col-md-2"><input class="form-control" [(ngModel)]="newProduct.price" placeholder="Preco" type="number" /></div>
+    <div class="col-md-1"><input class="form-control" [(ngModel)]="newProduct.stock" placeholder="Stock" type="number" /></div>
+    <div class="col-md-4"><input class="form-control" [(ngModel)]="newProduct.image_url" placeholder="URL imagem" /></div>
+    <div class="col-12"><textarea class="form-control" rows="2" [(ngModel)]="newProduct.description" placeholder="Descricao"></textarea></div>
+    <div class="col-12"><button class="btn btn-warning" (click)="addProduct()">Criar Produto</button></div>
+  </div>
+</div>
+
+<h4>Compras no Sistema</h4>
+<table class="table">
+  <tr><th>ID</th><th>Quem comprou</th><th>Status</th><th>Total</th><th>Acao</th></tr>
+  <tr *ngFor="let o of orders">
+    <td>{{ o.id }}</td><td>{{ o.customer_name }}</td><td>{{ o.status }}</td><td>{{ o.total_amount | number:'1.2-2' }}</td>
+    <td>
+      <select #st class="form-select form-select-sm d-inline-block" style="width:140px">
+        <option>Pendente</option><option>Pago</option><option>Enviado</option><option>Cancelado</option>
+      </select>
+      <button class="btn btn-sm btn-outline-dark ms-2" (click)="updateOrderStatus(o, st.value)">Salvar</button>
+    </td>
+  </tr>
+</table>
+
+<h4>Usuarios</h4>
+<table class="table">
+  <tr><th>ID</th><th>Nome</th><th>Email</th><th>Perfil</th><th>Estado</th><th>Acao</th></tr>
+  <tr *ngFor="let u of users">
+    <td>{{ u.id }}</td><td>{{ u.name }}</td><td>{{ u.email }}</td><td>{{ u.is_admin ? 'Admin' : 'Cliente' }}</td><td>{{ u.is_active ? 'Ativo' : 'Bloqueado' }}</td>
+    <td><button *ngIf="!u.is_admin" class="btn btn-sm btn-outline-secondary" (click)="toggleUser(u)">{{ u.is_active ? 'Bloquear' : 'Ativar' }}</button></td>
+  </tr>
+</table>

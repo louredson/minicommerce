@@ -1,0 +1,22 @@
+﻿<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/products">MiniCommerce</a>
+    <div class="collapse navbar-collapse show">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item"><a class="nav-link" routerLink="/products" routerLinkActive="active-nav" [routerLinkActiveOptions]="{ exact: false }">{{ i18n.t('products') }}</a></li>
+        <li class="nav-item" *ngIf="session.isLoggedIn && !session.isAdmin"><a class="nav-link" routerLink="/cart" routerLinkActive="active-nav">{{ i18n.t('cart') }}</a></li>
+        <li class="nav-item" *ngIf="session.isLoggedIn && !session.isAdmin"><a class="nav-link" routerLink="/profile" routerLinkActive="active-nav">{{ session.user?.name }}</a></li>
+        <li class="nav-item" *ngIf="session.isLoggedIn && session.isAdmin"><a class="nav-link" routerLink="/admin" routerLinkActive="active-nav">{{ i18n.t('admin') }}</a></li>
+        <li class="nav-item" *ngIf="!session.isLoggedIn"><a class="nav-link" routerLink="/login" routerLinkActive="active-nav">{{ i18n.t('login') }}</a></li>
+        <li class="nav-item" *ngIf="!session.isLoggedIn"><a class="nav-link" routerLink="/register" routerLinkActive="active-nav">{{ i18n.t('register') }}</a></li>
+        <li class="nav-item ms-2">
+          <select class="form-select form-select-sm" [ngModel]="i18n.lang" (ngModelChange)="i18n.set($event)">
+            <option value="pt">PT</option><option value="en">EN</option><option value="es">ES</option>
+          </select>
+        </li>
+        <li class="nav-item ms-2"><button class="btn btn-sm btn-outline-light" (click)="theme.toggle()">{{ theme.dark ? i18n.t('light') : i18n.t('dark') }}</button></li>
+        <li class="nav-item" *ngIf="session.isLoggedIn"><button class="btn btn-sm btn-outline-light ms-2" (click)="logout()">{{ i18n.t('logout') }}</button></li>
+      </ul>
+    </div>
+  </div>
+</nav>

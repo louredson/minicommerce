@@ -1,0 +1,14 @@
+﻿<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card p-4">
+      <h3>Entrar</h3>
+      <div class="mb-2"><input class="form-control" [(ngModel)]="email" placeholder="Email" /></div>
+      <div class="mb-2"><input class="form-control" [(ngModel)]="password" placeholder="Senha" type="password" /></div>
+      <div class="d-flex gap-2 align-items-center">
+        <button class="btn btn-warning" (click)="submit()">Entrar</button>
+        <a class="btn btn-outline-dark" routerLink="/register">Criar Conta</a>
+        <a class="btn btn-link p-0" routerLink="/forgot-password">Recuperar senha</a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+﻿<h2 class="mb-3">Produtos</h2>
+<div class="row mb-3">
+  <div class="col-md-4">
+    <select class="form-select" [(ngModel)]="selectedCategory" (change)="loadProducts()">
+      <option value="">Todas categorias</option>
+      <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+    </select>
+  </div>
+</div>
+<div class="row g-3">
+  <div class="col-md-4" *ngFor="let product of products">
+    <app-product-card
+      [product]="product"
+      [canBuy]="session.isLoggedIn && !session.isAdmin"
+      (add)="addToCart($event)"
+      (view)="openProduct($event)">
+    </app-product-card>
+  </div>
+</div>

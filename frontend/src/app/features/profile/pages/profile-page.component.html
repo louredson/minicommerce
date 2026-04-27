@@ -1,0 +1,21 @@
+﻿<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card p-3">
+      <h5>Informacoes do Usuario</h5>
+      <div><strong>Nome:</strong> {{ session.user?.name }}</div>
+      <div><strong>Email:</strong> {{ session.user?.email }}</div>
+      <div><strong>Perfil:</strong> {{ session.user?.is_admin ? 'Admin' : 'Cliente' }}</div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="card p-3">
+      <h5>Historico de Compras</h5>
+      <div *ngIf="!orders.length" class="text-muted">Sem compras ainda.</div>
+      <div *ngFor="let o of orders" class="border rounded p-2 mb-2">
+        <strong>Pedido #{{ o.id }} - {{ o.status }}</strong>
+        <div>Total: Kz {{ o.total_amount | number:'1.2-2' }}</div>
+        <div>Data: {{ o.created_at }}</div>
+      </div>
+    </div>
+  </div>
+</div>

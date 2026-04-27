@@ -1,0 +1,109 @@
+﻿/* Theme: Dark Yellow + Gray */
+:root {
+  --brand-yellow: #c99700;
+  --brand-yellow-dark: #8a6800;
+  --brand-gray-900: #212529;
+  --brand-gray-800: #343a40;
+  --brand-gray-700: #495057;
+  --brand-gray-300: #dee2e6;
+  --brand-gray-100: #f8f9fa;
+  --brand-white: #ffffff;
+}
+
+body {
+  background: linear-gradient(135deg, #f1f3f5 0%, #e9ecef 100%);
+  color: var(--brand-gray-900);
+  min-height: 100vh;
+}
+
+.navbar-brand,
+.section-title {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.bg-brand-dark {
+  background-color: var(--brand-gray-900) !important;
+}
+
+.bg-brand-yellow {
+  background-color: var(--brand-yellow) !important;
+}
+
+.btn-brand {
+  background-color: var(--brand-yellow);
+  border-color: var(--brand-yellow-dark);
+  color: var(--brand-gray-900);
+  font-weight: 600;
+}
+
+.btn-brand:hover {
+  background-color: var(--brand-yellow-dark);
+  border-color: var(--brand-yellow-dark);
+  color: var(--brand-white);
+}
+
+.btn-outline-brand {
+  border-color: var(--brand-yellow-dark);
+  color: var(--brand-yellow-dark);
+  font-weight: 600;
+}
+
+.btn-outline-brand:hover {
+  background-color: var(--brand-yellow-dark);
+  color: var(--brand-white);
+}
+
+.card {
+  border: 1px solid var(--brand-gray-300);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.75rem 1.25rem rgba(0, 0, 0, 0.12);
+}
+
+.product-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.hero {
+  background: linear-gradient(135deg, var(--brand-gray-800), var(--brand-gray-700));
+  color: var(--brand-white);
+  border-radius: 1rem;
+}
+
+.badge-stock {
+  background-color: var(--brand-gray-700);
+}
+
+.stat-card {
+  border-left: 0.35rem solid var(--brand-yellow);
+}
+
+.table thead {
+  background-color: var(--brand-gray-800);
+  color: var(--brand-white);
+}
+
+.sidebar-link {
+  color: var(--brand-gray-100);
+  text-decoration: none;
+  display: block;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+  background-color: var(--brand-yellow);
+  color: var(--brand-gray-900);
+}
+
+.footer-note {
+  color: var(--brand-gray-700);
+  font-size: 0.9rem;
+}

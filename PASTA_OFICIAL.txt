@@ -1,0 +1,7 @@
+﻿PASTA OFICIAL DO PROJETO:
+C:\xampp\htdocs\teste_front
+
+Regra:
+- Editar sempre nesta pasta.
+- Abrir backend via http://localhost/teste_front/backend/public
+- Abrir frontend via script start-frontend.bat dentro da pasta oficial.

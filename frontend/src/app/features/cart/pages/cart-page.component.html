@@ -1,0 +1,19 @@
+﻿<h2>Carrinho</h2>
+<table class="table" *ngIf="items.length">
+  <thead><tr><th>Produto</th><th>Qtd</th><th>Preco</th><th>Subtotal</th><th></th></tr></thead>
+  <tbody>
+    <tr *ngFor="let item of items">
+      <td>{{ item.name }}</td>
+      <td><input type="number" min="1" [(ngModel)]="item.qty" (change)="update(item)" /></td>
+      <td>{{ item.price | number:'1.2-2' }}</td>
+      <td>{{ item.subtotal | number:'1.2-2' }}</td>
+      <td><button class="btn btn-sm btn-outline-danger" (click)="remove(item)">Retirar</button></td>
+    </tr>
+  </tbody>
+</table>
+<p *ngIf="!items.length">Carrinho vazio.</p>
+<h4>Total: Kz {{ total | number:'1.2-2' }}</h4>
+<div class="d-flex gap-2">
+  <button class="btn btn-warning" [disabled]="!items.length" (click)="checkout()">Finalizar Compra</button>
+  <button class="btn btn-outline-secondary" [disabled]="!items.length" (click)="clearCart()">Cancelar Compras</button>
+</div>
