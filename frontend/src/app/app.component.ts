@@ -12,7 +12,7 @@ import { I18nService } from './core/services/i18n.service';
       <router-outlet></router-outlet>
     </main>
     <footer class="app-footer">
-      <div class="container py-3">MiniCommerce | Angular + PHP + SQL</div>
+      <div class="container py-3">Buyprime | Angular + PHP + SQL</div>
     </footer>
   `
 })

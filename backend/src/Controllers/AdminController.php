@@ -40,6 +40,9 @@ class AdminController
             if ($payload['category_id'] <= 0 || $payload['name'] === '' || $payload['price'] <= 0 || $payload['stock'] < 0 || $payload['image_url'] === '') {
                 throw new InvalidArgumentException('Dados do produto invalidos.');
             }
+            if (!filter_var($payload['image_url'], FILTER_VALIDATE_URL) || !preg_match('#^https?://#i', $payload['image_url'])) {
+                throw new InvalidArgumentException('A imagem deve ser um link valido (http/https).');
+            }
             $id = $this->products->create($payload);
             JsonResponse::send(['success' => true, 'message' => 'Produto criado.', 'data' => ['id' => $id]], 201);
         } catch (InvalidArgumentException $e) {
@@ -142,9 +145,14 @@ class AdminController
         }
         unset($o);
 
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+
         $pdf = PdfSimple::ordersReport($orders);
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename=relatorio-pedidos.pdf');
+        header('Content-Length: ' . strlen($pdf));
         echo $pdf;
         exit;
     }

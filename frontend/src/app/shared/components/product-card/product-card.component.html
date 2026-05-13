@@ -1,7 +1,8 @@
 ﻿<div class="card h-100 product-card-click" (click)="openDetail()" role="button" tabindex="0">
   <img
-    [src]="product.image_url || 'data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23d9dde2%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23444%22 font-size=%2230%22>Produto</text></svg>'"
-    (error)="$any($event.target).src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23d9dde2%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23444%22 font-size=%2230%22>Sem Imagem</text></svg>'"
+    [src]="imageSrc(product.image_url) || 'data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23d9dde2%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23444%22 font-size=%2230%22>Produto</text></svg>'"
+    [attr.data-original-src]="product.image_url || ''"
+    (error)="$any($event.target).src = $any($event.target).dataset?.originalSrc && $any($event.target).src !== $any($event.target).dataset?.originalSrc ? $any($event.target).dataset?.originalSrc : 'data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23d9dde2%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23444%22 font-size=%2230%22>Sem Imagem</text></svg>'"
     class="card-img-top"
     style="height:200px;object-fit:cover"
     [alt]="product.name"
@@ -12,7 +13,7 @@
     <p>{{ product.description }}</p>
     <strong class="mt-auto">Kz {{ product.price | number:'1.2-2' }}</strong>
     <button *ngIf="canBuy" class="btn btn-warning mt-2" (click)="addToCart($event)">
-      <span class="me-1">🛒</span>Adicionar produto
+      <span class="me-1">🛒</span>Adicionar ao carrinho
     </button>
   </div>
 </div>

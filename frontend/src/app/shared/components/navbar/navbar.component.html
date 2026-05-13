@@ -1,14 +1,36 @@
-﻿<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
   <div class="container">
-    <a class="navbar-brand" routerLink="/products">MiniCommerce</a>
-    <div class="collapse navbar-collapse show">
+    <a class="navbar-brand brand-logo d-flex align-items-center gap-2" routerLink="/products" (click)="closeMenu()">
+      <span class="brand-cart-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="20" r="1"></circle>
+          <circle cx="18" cy="20" r="1"></circle>
+          <path d="M2 3h3l2.1 10.3a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 2-1.6L22 7H7"></path>
+        </svg>
+      </span>
+      <span>Buyprime</span>
+    </a>
+
+    <button
+      class="navbar-toggler custom-toggler"
+      type="button"
+      aria-label="Abrir menu"
+      [attr.aria-expanded]="isMenuOpen"
+      [class.open]="isMenuOpen"
+      (click)="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="collapse navbar-collapse" [class.show]="isMenuOpen">
       <ul class="navbar-nav ms-auto align-items-center">
-        <li class="nav-item"><a class="nav-link" routerLink="/products" routerLinkActive="active-nav" [routerLinkActiveOptions]="{ exact: false }">{{ i18n.t('products') }}</a></li>
-        <li class="nav-item" *ngIf="session.isLoggedIn && !session.isAdmin"><a class="nav-link" routerLink="/cart" routerLinkActive="active-nav">{{ i18n.t('cart') }}</a></li>
-        <li class="nav-item" *ngIf="session.isLoggedIn && !session.isAdmin"><a class="nav-link" routerLink="/profile" routerLinkActive="active-nav">{{ session.user?.name }}</a></li>
-        <li class="nav-item" *ngIf="session.isLoggedIn && session.isAdmin"><a class="nav-link" routerLink="/admin" routerLinkActive="active-nav">{{ i18n.t('admin') }}</a></li>
-        <li class="nav-item" *ngIf="!session.isLoggedIn"><a class="nav-link" routerLink="/login" routerLinkActive="active-nav">{{ i18n.t('login') }}</a></li>
-        <li class="nav-item" *ngIf="!session.isLoggedIn"><a class="nav-link" routerLink="/register" routerLinkActive="active-nav">{{ i18n.t('register') }}</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/products" routerLinkActive="active-nav" [routerLinkActiveOptions]="{ exact: false }" (click)="closeMenu()">{{ i18n.t('products') }}</a></li>
+        <li class="nav-item" *ngIf="session.isLoggedIn && !session.isAdmin"><a class="nav-link" routerLink="/cart" routerLinkActive="active-nav" (click)="closeMenu()">{{ i18n.t('cart') }}</a></li>
+        <li class="nav-item" *ngIf="session.isLoggedIn && !session.isAdmin"><a class="nav-link" routerLink="/profile" routerLinkActive="active-nav" (click)="closeMenu()">{{ session.user?.name }}</a></li>
+        <li class="nav-item" *ngIf="session.isLoggedIn && session.isAdmin"><a class="nav-link" routerLink="/admin" routerLinkActive="active-nav" (click)="closeMenu()">{{ i18n.t('admin') }}</a></li>
+        <li class="nav-item" *ngIf="!session.isLoggedIn"><a class="nav-link" routerLink="/login" routerLinkActive="active-nav" (click)="closeMenu()">{{ i18n.t('login') }}</a></li>
+        <li class="nav-item" *ngIf="!session.isLoggedIn"><a class="nav-link" routerLink="/register" routerLinkActive="active-nav" (click)="closeMenu()">{{ i18n.t('register') }}</a></li>
         <li class="nav-item ms-2">
           <select class="form-select form-select-sm" [ngModel]="i18n.lang" (ngModelChange)="i18n.set($event)">
             <option value="pt">PT</option><option value="en">EN</option><option value="es">ES</option>

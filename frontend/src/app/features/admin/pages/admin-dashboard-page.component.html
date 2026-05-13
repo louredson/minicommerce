@@ -1,57 +1,119 @@
-﻿<div class="d-flex justify-content-between align-items-center mb-2">
-  <h2>Dashboard Admin</h2>
-  <button class="btn btn-outline-dark" (click)="downloadPdf()">Gerar Relatorio PDF</button>
-</div>
+﻿<div class="admin-layout">
+  <aside class="admin-sidebar card p-3">
+    <h4 class="mb-3">Painel Admin</h4>
+    <button class="btn admin-menu-btn" [class.active]="activeSection==='products'" (click)="setSection('products')">Produtos</button>
+    <button class="btn admin-menu-btn" [class.active]="activeSection==='orders'" (click)="setSection('orders')">Compras e Relatorio</button>
+    <button class="btn admin-menu-btn" [class.active]="activeSection==='users'" (click)="setSection('users')">Usuarios</button>
+  </aside>
 
-<div class="row g-2 mb-3">
-  <div class="col-md-3"><label class="form-label">De</label><input type="date" class="form-control" [(ngModel)]="from" /></div>
-  <div class="col-md-3"><label class="form-label">Ate</label><input type="date" class="form-control" [(ngModel)]="to" /></div>
-  <div class="col-md-3 d-flex align-items-end"><button class="btn btn-dark" (click)="load()">Filtrar Compras</button></div>
-</div>
-
-<div class="row g-3 mb-4">
-  <div class="col-md-4"><div class="card p-3">Produtos: {{ stats.products || 0 }}</div></div>
-  <div class="col-md-4"><div class="card p-3">Pedidos: {{ stats.orders || 0 }}</div></div>
-  <div class="col-md-4"><div class="card p-3">Usuarios: {{ stats.users || 0 }}</div></div>
-</div>
-
-<div class="card p-3 mb-4">
-  <h5>Adicionar Produto</h5>
-  <div class="row g-2">
-    <div class="col-md-3"><input class="form-control" [(ngModel)]="newProduct.name" placeholder="Nome" /></div>
-    <div class="col-md-2">
-      <select class="form-select" [(ngModel)]="newProduct.category_id">
-        <option value="">Categoria</option>
-        <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
-      </select>
+  <section class="admin-content">
+    <div class="row g-3 mb-4">
+      <div class="col-md-4"><div class="card p-3">Produtos: {{ stats.products || 0 }}</div></div>
+      <div class="col-md-4"><div class="card p-3">Pedidos: {{ stats.orders || 0 }}</div></div>
+      <div class="col-md-4"><div class="card p-3">Usuarios: {{ stats.users || 0 }}</div></div>
     </div>
-    <div class="col-md-2"><input class="form-control" [(ngModel)]="newProduct.price" placeholder="Preco" type="number" /></div>
-    <div class="col-md-1"><input class="form-control" [(ngModel)]="newProduct.stock" placeholder="Stock" type="number" /></div>
-    <div class="col-md-4"><input class="form-control" [(ngModel)]="newProduct.image_url" placeholder="URL imagem" /></div>
-    <div class="col-12"><textarea class="form-control" rows="2" [(ngModel)]="newProduct.description" placeholder="Descricao"></textarea></div>
-    <div class="col-12"><button class="btn btn-warning" (click)="addProduct()">Criar Produto</button></div>
-  </div>
+
+    <div *ngIf="activeSection==='products'" class="card p-3 mb-4">
+      <h5 class="brand-form-title mb-2">
+        <span class="brand-cart-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="20" r="1"></circle><circle cx="18" cy="20" r="1"></circle><path d="M2 3h3l2.1 10.3a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 2-1.6L22 7H7"></path>
+          </svg>
+        </span>
+        Buyprime
+      </h5>
+      <p class="text-muted mb-3">{{ editingProductId ? 'Atualizar Produto' : 'Adicionar Produto' }}</p>
+      <div class="row g-2">
+        <div class="col-md-3"><input class="form-control" [(ngModel)]="newProduct.name" placeholder="Nome" /></div>
+        <div class="col-md-2">
+          <select class="form-select" [(ngModel)]="newProduct.category_id">
+            <option value="">Categoria</option>
+            <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+          </select>
+        </div>
+        <div class="col-md-2"><input class="form-control" [(ngModel)]="newProduct.price" placeholder="Preco" type="number" /></div>
+        <div class="col-md-1"><input class="form-control" [(ngModel)]="newProduct.stock" placeholder="Stock" type="number" /></div>
+        <div class="col-md-4"><input class="form-control" [(ngModel)]="newProduct.image_url" placeholder="URL imagem" /></div>
+        <div class="col-md-4"><small class="text-muted">Use um link direto de imagem (ex: Unsplash/Pexels).</small></div>
+        <div class="col-12"><textarea class="form-control" rows="2" [(ngModel)]="newProduct.description" placeholder="Descricao"></textarea></div>
+        <div class="col-12 d-flex gap-2">
+          <button class="btn btn-warning" (click)="saveProduct()">{{ editingProductId ? 'Atualizar Produto' : 'Criar Produto' }}</button>
+          <button *ngIf="editingProductId" class="btn btn-outline-secondary" (click)="cancelEdit()">Cancelar Edicao</button>
+        </div>
+      </div>
+
+      <hr class="my-4" />
+      <h5>Produtos Cadastrados</h5>
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Imagem</th>
+              <th>Nome</th>
+              <th>Categoria</th>
+              <th>Preco</th>
+              <th>Stock</th>
+              <th>Acao</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of products">
+              <td>{{ p.id }}</td>
+              <td><img [src]="imageSrc(p.image_url)" [attr.data-original-src]="p.image_url || ''" (error)="$any($event.target).src = $any($event.target).dataset?.originalSrc && $any($event.target).src !== $any($event.target).dataset?.originalSrc ? $any($event.target).dataset?.originalSrc : 'data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23d9dde2%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23444%22 font-size=%2230%22>Sem Imagem</text></svg>'" [alt]="p.name" style="width:56px;height:56px;object-fit:cover;border-radius:8px" /></td>
+              <td>{{ p.name }}</td>
+              <td>{{ p.category_name }}</td>
+              <td>{{ p.price | number:'1.2-2' }}</td>
+              <td>{{ p.stock }}</td>
+              <td class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-dark" (click)="editProduct(p)">Atualizar</button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteProduct(p)">Eliminar</button>
+              </td>
+            </tr>
+            <tr *ngIf="!products.length">
+              <td colspan="7" class="text-muted">Sem produtos cadastrados.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="activeSection==='orders'">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h4>Compras no Sistema</h4>
+        <button class="btn btn-outline-dark" (click)="downloadPdf()">Gerar Relatorio PDF</button>
+      </div>
+
+      <div class="row g-2 mb-3">
+        <div class="col-md-3"><label class="form-label">De</label><input type="date" class="form-control" [(ngModel)]="from" /></div>
+        <div class="col-md-3"><label class="form-label">Ate</label><input type="date" class="form-control" [(ngModel)]="to" /></div>
+        <div class="col-md-3 d-flex align-items-end"><button class="btn btn-dark" (click)="load()">Filtrar Compras</button></div>
+      </div>
+
+      <table class="table">
+        <tr><th>ID</th><th>Quem comprou</th><th>Status</th><th>Total</th><th>Acao</th></tr>
+        <tr *ngFor="let o of orders">
+          <td>{{ o.id }}</td><td>{{ o.customer_name }}</td><td>{{ o.status }}</td><td>{{ o.total_amount | number:'1.2-2' }}</td>
+          <td>
+            <select #st class="form-select form-select-sm d-inline-block" style="width:140px">
+              <option>Pendente</option><option>Pago</option><option>Enviado</option><option>Cancelado</option>
+            </select>
+            <button class="btn btn-sm btn-outline-dark ms-2" (click)="updateOrderStatus(o, st.value)">Salvar</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div *ngIf="activeSection==='users'">
+      <h4>Usuarios</h4>
+      <table class="table">
+        <tr><th>ID</th><th>Nome</th><th>Email</th><th>Perfil</th><th>Estado</th><th>Acao</th></tr>
+        <tr *ngFor="let u of users">
+          <td>{{ u.id }}</td><td>{{ u.name }}</td><td>{{ u.email }}</td><td>{{ u.isAdmin ? 'Admin' : 'Cliente' }}</td><td>{{ u.isActive ? 'Ativo' : 'Bloqueado' }}</td>
+          <td><button *ngIf="!u.isAdmin" class="btn btn-sm btn-outline-secondary" (click)="toggleUser(u)">{{ u.isActive ? 'Bloquear' : 'Ativar' }}</button></td>
+        </tr>
+      </table>
+    </div>
+  </section>
 </div>
 
-<h4>Compras no Sistema</h4>
-<table class="table">
-  <tr><th>ID</th><th>Quem comprou</th><th>Status</th><th>Total</th><th>Acao</th></tr>
-  <tr *ngFor="let o of orders">
-    <td>{{ o.id }}</td><td>{{ o.customer_name }}</td><td>{{ o.status }}</td><td>{{ o.total_amount | number:'1.2-2' }}</td>
-    <td>
-      <select #st class="form-select form-select-sm d-inline-block" style="width:140px">
-        <option>Pendente</option><option>Pago</option><option>Enviado</option><option>Cancelado</option>
-      </select>
-      <button class="btn btn-sm btn-outline-dark ms-2" (click)="updateOrderStatus(o, st.value)">Salvar</button>
-    </td>
-  </tr>
-</table>
-
-<h4>Usuarios</h4>
-<table class="table">
-  <tr><th>ID</th><th>Nome</th><th>Email</th><th>Perfil</th><th>Estado</th><th>Acao</th></tr>
-  <tr *ngFor="let u of users">
-    <td>{{ u.id }}</td><td>{{ u.name }}</td><td>{{ u.email }}</td><td>{{ u.is_admin ? 'Admin' : 'Cliente' }}</td><td>{{ u.is_active ? 'Ativo' : 'Bloqueado' }}</td>
-    <td><button *ngIf="!u.is_admin" class="btn btn-sm btn-outline-secondary" (click)="toggleUser(u)">{{ u.is_active ? 'Bloquear' : 'Ativar' }}</button></td>
-  </tr>
-</table>

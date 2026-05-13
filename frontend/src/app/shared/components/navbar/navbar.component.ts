@@ -11,6 +11,8 @@ import { I18nService } from '../../../core/services/i18n.service';
   templateUrl: './navbar.component.html'
 })
 export class NavbarComponent implements OnInit {
+  isMenuOpen = false;
+
   constructor(
     public session: SessionService,
     public theme: ThemeService,
@@ -29,7 +31,16 @@ export class NavbarComponent implements OnInit {
   logout() {
     this.auth.logout().subscribe(() => {
       this.session.user = null;
+      this.isMenuOpen = false;
       this.router.navigate(['/login']);
     });
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false;
   }
 }

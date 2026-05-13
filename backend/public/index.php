@@ -61,6 +61,7 @@ try {
     if ($method === 'GET' && $route === '/categories') $catalogController->categories();
     if ($method === 'GET' && $route === '/products') $catalogController->products(isset($_GET['category_id']) ? (int) $_GET['category_id'] : null);
     if ($method === 'GET' && $route === '/products/item') $catalogController->productById((int) ($_GET['id'] ?? 0));
+    if ($method === 'GET' && $route === '/image-proxy') $catalogController->imageProxy((string) ($_GET['url'] ?? ''));
 
     if ($method === 'POST' && $route === '/cart/add') { AuthMiddleware::requireCustomer(); $cartController->add($body); }
     if ($method === 'PUT' && $route === '/cart/update') { AuthMiddleware::requireCustomer(); $cartController->update($body); }

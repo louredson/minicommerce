@@ -4,7 +4,7 @@
   <tbody>
     <tr *ngFor="let item of items">
       <td>{{ item.name }}</td>
-      <td><input type="number" min="1" [(ngModel)]="item.qty" (change)="update(item)" /></td>
+      <td><input type="number" min="1" [max]="item.stock" [(ngModel)]="item.qty" (change)="update(item)" /></td>
       <td>{{ item.price | number:'1.2-2' }}</td>
       <td>{{ item.subtotal | number:'1.2-2' }}</td>
       <td><button class="btn btn-sm btn-outline-danger" (click)="remove(item)">Retirar</button></td>

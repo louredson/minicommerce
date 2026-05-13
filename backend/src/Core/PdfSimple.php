@@ -6,35 +6,49 @@ class PdfSimple
 {
     public static function ordersReport(array $orders): string
     {
-        $lines = [
-            'Relatorio de Pedidos - MiniCommerce',
-            'Gerado em: ' . date('Y-m-d H:i:s'),
-            '--------------------------------------'
-        ];
+        $lines = [];
+        $lines[] = 'Relatorio de Compras - Buyprime';
+        $lines[] = 'Gerado em: ' . date('Y-m-d H:i:s');
+        $lines[] = str_repeat('-', 120);
+        $lines[] = sprintf('%-6s %-26s %-20s %-14s %12s', 'ID', 'CLIENTE', 'DATA', 'ESTADO', 'TOTAL (Kz)');
+        $lines[] = str_repeat('-', 120);
 
-        foreach ($orders as $o) {
-            $lines[] = sprintf('#%d | %s | %s | Kz %.2f', $o['id'], $o['customer_name'], $o['status'], (float)$o['total_amount']);
-            foreach (($o['items'] ?? []) as $it) {
-                $lines[] = sprintf('  - %s x%d (Kz %.2f)', $it['name'], (int)$it['quantity'], (float)$it['unit_price']);
+        if (!$orders) {
+            $lines[] = 'Sem compras no periodo selecionado.';
+        } else {
+            foreach ($orders as $o) {
+                $date = isset($o['created_at']) ? date('Y-m-d H:i', strtotime((string) $o['created_at'])) : '-';
+                $customer = mb_substr((string)($o['customer_name'] ?? '-'), 0, 26);
+                $status = mb_substr((string)($o['status'] ?? '-'), 0, 14);
+                $lines[] = sprintf(
+                    '%-6s %-26s %-20s %-14s %12.2f',
+                    '#' . (int)$o['id'],
+                    $customer,
+                    $date,
+                    $status,
+                    (float)$o['total_amount']
+                );
             }
         }
 
-        $content = "BT /F1 10 Tf 40 800 Td";
+        $content = "BT /F1 9 Tf 40 800 Td 12 TL ";
         $first = true;
         foreach ($lines as $line) {
             $safe = str_replace(['\\', '(', ')'], ['\\\\', '\\(', '\\)'], $line);
-            if (!$first) $content .= ' T*';
-            $content .= ' (' . $safe . ') Tj';
+            if (!$first) {
+                $content .= 'T* ';
+            }
+            $content .= '(' . $safe . ') Tj ';
             $first = false;
         }
-        $content .= ' ET';
+        $content .= 'ET';
 
         $objs = [];
         $objs[] = '1 0 obj<< /Type /Catalog /Pages 2 0 R >>endobj';
         $objs[] = '2 0 obj<< /Type /Pages /Kids [3 0 R] /Count 1 >>endobj';
         $objs[] = '3 0 obj<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>endobj';
         $objs[] = '4 0 obj<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>endobj';
-        $objs[] = '5 0 obj<< /Length ' . strlen($content) . ' >>stream' . "\n" . $content . "\n" . 'endstream endobj';
+        $objs[] = '5 0 obj<< /Length ' . strlen($content) . ' >>stream' . "\n" . $content . "\nendstream\nendobj";
 
         $pdf = "%PDF-1.4\n";
         $offsets = [];

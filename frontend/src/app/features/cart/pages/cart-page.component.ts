@@ -22,7 +22,15 @@ export class CartPageComponent implements OnInit {
     });
   }
 
-  update(item: any) { this.cart.update(item.id, item.qty).subscribe({ next: () => this.load() }); }
+  update(item: any) {
+    this.cart.update(item.id, item.qty).subscribe({
+      next: () => this.load(),
+      error: (err) => {
+        this.alerts.show('danger', err.error?.message ?? 'Falha ao atualizar quantidade.');
+        this.load();
+      }
+    });
+  }
 
   remove(item: any) {
     this.cart.remove(item.id).subscribe({

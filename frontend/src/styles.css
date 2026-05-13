@@ -1,4 +1,6 @@
-﻿:root {
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Sora:wght@600;700&display=swap');
+
+:root {
   --light-bg: #e6e8eb;
   --light-surface: #f5f6f8;
   --brand-yellow-dark: #b88700;
@@ -8,13 +10,95 @@
 body {
   background: linear-gradient(135deg, var(--light-bg), #d8dce1);
   color: var(--brand-gray-dark);
+  font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .navbar { background: var(--brand-gray-dark) !important; }
-.navbar .nav-link, .navbar .navbar-brand { color: #fff !important; }
-.btn-warning { background: var(--brand-yellow-dark); border-color: #946d00; color: #fff; }
-.btn-warning:hover { background: #946d00; }
+.navbar .nav-link, .navbar .navbar-brand { color: #fff !important; font-weight: 700; }
+.brand-logo { font-family: 'Sora', 'Nunito', sans-serif; letter-spacing: .4px; font-size: 1.25rem; }
+.brand-cart-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(247, 194, 0, 0.2);
+  color: #f7c200;
+}
+.custom-toggler { border: 0; box-shadow: none !important; padding: 4px; }
+.custom-toggler span { display: block; width: 24px; height: 2px; background: #fff; margin: 5px 0; transition: .25s ease; transform-origin: center; }
+.custom-toggler.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.custom-toggler.open span:nth-child(2) { opacity: 0; }
+.custom-toggler.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.btn-warning {
+  background: linear-gradient(135deg, #d7a100, #b88700);
+  border-color: #946d00;
+  color: #fff;
+  font-weight: 800;
+  border-radius: 10px;
+  box-shadow: 0 10px 18px rgba(184, 135, 0, 0.24);
+}
+.btn-warning:hover {
+  background: linear-gradient(135deg, #c79600, #9a7000);
+  transform: translateY(-1px);
+}
+.btn {
+  border-radius: 10px;
+  transition: all .2s ease;
+}
 .card { border-radius: 12px; background: var(--light-surface); }
+.form-shell {
+  border: 1px solid #d9dee5;
+  box-shadow: 0 16px 34px rgba(47, 52, 58, 0.12);
+  background: linear-gradient(180deg, #ffffff, #f6f8fb);
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.card .form-control,
+.card .form-select,
+.card textarea.form-control {
+  border-radius: 10px;
+  border: 1px solid #d2d7dd;
+  background: #ffffff;
+  color: #2f343a;
+  padding: .6rem .75rem;
+}
+.card .form-control:focus,
+.card .form-select:focus,
+.card textarea.form-control:focus {
+  border-color: #c59300;
+  box-shadow: 0 0 0 0.2rem rgba(197, 147, 0, 0.2);
+}
+.card h5,
+.card h4,
+.card h3 {
+  font-family: 'Sora', 'Nunito', sans-serif;
+}
+.brand-form-title {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  font-family: 'Sora', 'Nunito', sans-serif;
+  font-weight: 700;
+  letter-spacing: .3px;
+  margin-bottom: 0;
+  justify-content: center;
+  width: 100%;
+}
+.form-subtitle { text-align: center; }
+.form-page-row { min-height: calc(100vh - 180px); align-items: center; }
+.form-actions { margin-top: 10px; }
+.btn-outline-dark {
+  border-radius: 10px;
+  border-color: #6b7280;
+}
+.btn-outline-dark:hover {
+  background: #2f343a;
+  color: #fff;
+}
 
 .toast-window {
   position: fixed;
@@ -39,4 +123,17 @@ body {
 .active-nav { border-bottom: 3px solid #ffd54f; box-shadow: inset 0 -2px 0 rgba(255,213,79,.8); }
 .product-card-click { cursor:pointer; transition:transform .15s ease; }
 .product-card-click:hover { transform: translateY(-2px); }
+
+.admin-layout{display:grid;grid-template-columns:280px 1fr;gap:16px}
+.admin-sidebar{height:fit-content;position:sticky;top:72px}
+.admin-menu-btn{width:100%;text-align:left;margin-bottom:8px;border:1px solid #d0d0d0;background:#fff}
+.admin-menu-btn.active{background:#212529;color:#fff;border-color:#212529;box-shadow:inset 0 -3px 0 #ffc107}
+@media (max-width: 992px){.admin-layout{grid-template-columns:1fr}.admin-sidebar{position:static}}
+@media (max-width: 991.98px){
+  .navbar .navbar-collapse { margin-top: 10px; background: rgba(47,52,58,.96); border-radius: 10px; padding: 10px; }
+  .navbar .nav-item { width: 100%; }
+  .navbar .nav-link, .navbar .btn, .navbar .form-select { width: 100%; }
+  .form-shell { min-height: 420px; }
+  .form-page-row { min-height: auto; }
+}
 

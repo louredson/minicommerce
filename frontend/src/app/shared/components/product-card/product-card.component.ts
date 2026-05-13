@@ -20,4 +20,9 @@ export class ProductCardComponent {
     event.stopPropagation();
     this.add.emit(this.product.id);
   }
+
+  imageSrc(url: string | undefined | null): string {
+    if (!url) return '';
+    return `/api/image-proxy?url=${encodeURIComponent(url)}`;
+  }
 }
