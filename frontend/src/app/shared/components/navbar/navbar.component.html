@@ -24,6 +24,29 @@
     </button>
 
     <div class="collapse navbar-collapse" [class.show]="isMenuOpen">
+      <form *ngIf="showSearch" class="d-flex navbar-search mx-lg-auto my-2 my-lg-0" (submit)="$event.preventDefault(); searchProducts()">
+        <span class="search-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="16.65" y1="16.65" x2="21" y2="21"></line>
+          </svg>
+        </span>
+        <input
+          class="form-control form-control-sm"
+          type="search"
+          placeholder="Pesquisar produtos"
+          [(ngModel)]="searchTerm"
+          (input)="onSearchInput()"
+          (focus)="onSearchInput()"
+          (blur)="hideSuggestionsSoon()"
+          [ngModelOptions]="{ standalone: true }" />
+        <div class="search-suggestions" *ngIf="suggestions.length">
+          <button type="button" *ngFor="let s of suggestions" class="search-suggestion-item" (click)="selectSuggestion(s.name)">
+            <span>{{ s.name }}</span>
+            <small>{{ s.category_name }}</small>
+          </button>
+        </div>
+      </form>
       <ul class="navbar-nav ms-auto align-items-center">
         <li class="nav-item"><a class="nav-link" routerLink="/products" routerLinkActive="active-nav" [routerLinkActiveOptions]="{ exact: false }" (click)="closeMenu()">{{ i18n.t('products') }}</a></li>
         <li class="nav-item" *ngIf="session.isLoggedIn && !session.isAdmin"><a class="nav-link" routerLink="/cart" routerLinkActive="active-nav" (click)="closeMenu()">{{ i18n.t('cart') }}</a></li>

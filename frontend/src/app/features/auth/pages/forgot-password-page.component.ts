@@ -9,17 +9,15 @@ import { AlertService } from '../../../core/services/alert.service';
 })
 export class ForgotPasswordPageComponent {
   email = '';
-  token = '';
 
   constructor(private auth: AuthService, private alerts: AlertService) {}
 
   submit() {
     this.auth.forgotPassword(this.email).subscribe({
       next: (res) => {
-        this.token = res?.data?.token || '';
-        this.alerts.show('info', `Token de recuperacao: ${this.token}`);
+        this.alerts.show('success', res?.message || 'Se o email existir e estiver ativo, o codigo foi enviado.');
       },
-      error: (err) => this.alerts.show('danger', err.error?.message || 'Falha ao gerar token.')
+      error: (err) => this.alerts.show('danger', err.error?.message || 'Falha ao enviar codigo.')
     });
   }
 }

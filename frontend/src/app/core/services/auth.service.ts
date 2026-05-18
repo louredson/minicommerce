@@ -26,7 +26,7 @@ export class AuthService {
     return this.http.post<any>(`${this.base}/auth/forgot-password`, { email }, { withCredentials: true });
   }
 
-  resetPassword(payload: { token: string; password: string; confirm_password: string }) {
+  resetPassword(payload: { email: string; token: string; password: string; confirm_password: string }) {
     return this.http.post<any>(`${this.base}/auth/reset-password`, payload, { withCredentials: true });
   }
 

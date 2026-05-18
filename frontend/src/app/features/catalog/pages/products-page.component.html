@@ -8,7 +8,7 @@
   </div>
 </div>
 <div class="row g-3">
-  <div class="col-md-4" *ngFor="let product of products">
+  <div class="col-md-4" *ngFor="let product of filteredProducts">
     <app-product-card
       [product]="product"
       [canBuy]="session.isLoggedIn && !session.isAdmin"
@@ -17,3 +17,4 @@
     </app-product-card>
   </div>
 </div>
+<p *ngIf="!filteredProducts.length" class="text-muted mt-3 text-center">Nenhum produto encontrado para a pesquisa.</p>

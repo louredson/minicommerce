@@ -26,6 +26,52 @@ body {
   background: rgba(247, 194, 0, 0.2);
   color: #f7c200;
 }
+.navbar-search {
+  position: relative;
+  width: min(100%, 357px);
+  margin-left: 15%;
+}
+.navbar-search .form-control {
+  border-radius: 999px;
+  padding-left: 2rem;
+}
+.navbar-search .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8b949e;
+  pointer-events: none;
+}
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #d7dce3;
+  border-radius: 10px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+  overflow: hidden;
+  z-index: 4000;
+}
+.search-suggestion-item {
+  width: 100%;
+  border: 0;
+  background: #fff;
+  color: #222;
+  padding: .5rem .75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+}
+.search-suggestion-item:hover {
+  background: #f3f5f8;
+}
+.search-suggestion-item small {
+  color: #6b7280;
+}
 .custom-toggler { border: 0; box-shadow: none !important; padding: 4px; }
 .custom-toggler span { display: block; width: 24px; height: 2px; background: #fff; margin: 5px 0; transition: .25s ease; transform-origin: center; }
 .custom-toggler.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -133,6 +179,7 @@ body {
   .navbar .navbar-collapse { margin-top: 10px; background: rgba(47,52,58,.96); border-radius: 10px; padding: 10px; }
   .navbar .nav-item { width: 100%; }
   .navbar .nav-link, .navbar .btn, .navbar .form-select { width: 100%; }
+  .navbar-search { width: 100%; margin-bottom: 8px; margin-left: 0; }
   .form-shell { min-height: 420px; }
   .form-page-row { min-height: auto; }
 }

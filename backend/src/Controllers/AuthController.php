@@ -44,8 +44,13 @@ class AuthController
     public function requestPasswordReset(array $body): void
     {
         try {
-            $result = $this->passwordReset->request((string) ($body['email'] ?? ''));
-            JsonResponse::send(['success' => true, 'message' => 'Token gerado.', 'data' => $result]);
+            $ip = $_SERVER['REMOTE_ADDR'] ?? null;
+            $result = $this->passwordReset->request((string) ($body['email'] ?? ''), is_string($ip) ? $ip : null);
+            JsonResponse::send([
+                'success' => true,
+                'message' => 'Se o email existir e estiver ativo, enviamos um codigo de 4 digitos.',
+                'data' => $result
+            ]);
         } catch (InvalidArgumentException $e) {
             JsonResponse::send(['success' => false, 'message' => $e->getMessage()], 422);
         }
@@ -55,6 +60,7 @@ class AuthController
     {
         try {
             $this->passwordReset->reset(
+                (string) ($body['email'] ?? ''),
                 (string) ($body['token'] ?? ''),
                 (string) ($body['password'] ?? ''),
                 (string) ($body['confirm_password'] ?? '')
